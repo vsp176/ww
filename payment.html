@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisionPay - Pembayaran QRIS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    
+    <style>
+        :root {
+            --bg-color: #000000;
+            --card-color: #111111;
+            --accent-color: #ff3b30;
+            --white-shimmer: rgba(255, 255, 255, 0.2);
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --border-color: #222222;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Montserrat', sans-serif; padding-top: 40px; padding-bottom: 30px; }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-up { animation: fadeInUp 0.5s ease forwards; opacity: 0; }
+
+        @keyframes whiteSweep {
+            0% { transform: translateX(-200%) skewX(-30deg); }
+            35% { transform: translateX(200%) skewX(-30deg); }
+            100% { transform: translateX(200%) skewX(-30deg); }
+        }
+
+        /* Header */
+        
+
+        /* Timer Box */
+        .timer-box { 
+            margin: 15px 18px; padding: 12px; background: rgba(255, 59, 48, 0.05); 
+            border: 1px dashed var(--accent-color); border-radius: 12px; text-align: center;
+        }
+        .timer-box p { font-size: 10px; color: var(--text-muted); margin-bottom: 2px; }
+        .timer-box span { font-size: 16px; font-weight: 700; color: var(--accent-color); }
+
+        /* QRIS Card */
+        .qris-card {
+            margin: 0 18px 20px; background: #fff; border-radius: 20px; padding: 25px;
+            text-align: center; position: relative; overflow: hidden;
+        }
+        .qris-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .qris-header img { height: 25px; }
+        .qris-code { width: 100%; max-width: 250px; margin: 0 auto; display: block; }
+        .qris-footer { margin-top: 15px; color: #000; }
+        .qris-footer p { font-size: 11px; font-weight: 700; color: #333; }
+        
+        /* Amount Card */
+        .amount-box {
+            margin: 0 18px 25px; background: var(--card-color); 
+            border: 1px solid var(--border-color); border-radius: 18px; padding: 20px; text-align: center;
+        }
+        .amount-box p { font-size: 10px; color: var(--text-muted); margin-bottom: 5px; }
+        .amount-box h2 { font-size: 20px; font-weight: 800; color: #fff; }
+        .copy-btn { 
+            display: inline-flex; align-items: center; gap: 8px; margin-top: 12px; 
+            background: #1a1a1a; padding: 8px 15px; border-radius: 100px;
+            font-size: 11px; color: var(--accent-color); font-weight: 700; cursor: pointer;
+        }
+
+        /* Instruction Section */
+        .section-title-wrap { margin: 0 22px 12px; display: flex; align-items: center; gap: 10px; }
+        .section-title { font-size: 13px; font-weight: 700; color: #fff; }
+        .section-line { flex: 1; height: 1px; background: linear-gradient(to right, #222, transparent); }
+
+        .instruction-list { margin: 0 18px; display: flex; flex-direction: column; gap: 10px; }
+        .step-item {
+            background: var(--card-color); border: 1px solid var(--border-color);
+            padding: 15px; border-radius: 15px; display: flex; align-items: flex-start; gap: 12px;
+        }
+        .step-number { 
+            background: var(--accent-color); color: #fff; width: 22px; height: 22px; 
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 800; flex-shrink: 0;
+        }
+        .step-text { font-size: 11px; color: #bbb; line-height: 1.5; }
+
+        /* Action Buttons */
+        .btn-container { padding: 25px 18px; display: flex; flex-direction: column; gap: 12px; }
+        .btn-main {
+            background: var(--accent-color); color: #fff; padding: 15px; border-radius: 12px;
+            text-align: center; text-decoration: none; font-size: 14px; font-weight: 700;
+            position: relative; overflow: hidden;
+        }
+        .btn-main::after {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: whiteSweep 3s infinite linear;
+        }
+    </style>
+</head>
+<body>
+
+
+
+<div class="timer-box animate-up" style="animation-delay: 0.1s;">
+    <p>Batas Waktu Pembayaran</p>
+    <span id="countdown">14:59</span>
+</div>
+
+<div class="qris-card animate-up" style="animation-delay: 0.2s;">
+    <div class="qris-header">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_QRIS.svg" alt="QRIS">
+        <img src="https://upload.wikimedia.org/wikipedia/id/thumb/e/e1/GPN_Logo.svg/1200px-GPN_Logo.svg.png" alt="GPN" style="height: 18px;">
+    </div>
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=VisionPayPayment" alt="QR Code" class="qris-code">
+    <div class="qris-footer">
+        <p>NMID : ID1020304050607</p>
+        <p style="font-size: 9px; color: #777; margin-top: 5px;">Cetak/Screenshot QRIS ini untuk membayar</p>
+    </div>
+</div>
+
+<div class="amount-box animate-up" style="animation-delay: 0.3s;">
+    <p>Total yang harus dibayar</p>
+    <h2>Rp 50.000</h2>
+    <div class="copy-btn"><i class="ri-file-copy-line"></i> Salin Nominal</div>
+</div>
+
+<div class="section-title-wrap animate-up" style="animation-delay: 0.4s;">
+    <span class="section-title">Instruksi Pembayaran</span>
+    <div class="section-line"></div>
+</div>
+
+<div class="instruction-list animate-up" style="animation-delay: 0.4s;">
+    <div class="step-item">
+        <div class="step-number">1</div>
+        <div class="step-text">Simpan atau Screenshot kode QRIS di atas.</div>
+    </div>
+    <div class="step-item">
+        <div class="step-number">2</div>
+        <div class="step-text">Buka aplikasi E-Wallet (Dana, OVO, GoPay) atau Mobile Banking Anda.</div>
+    </div>
+    <div class="step-item">
+        <div class="step-number">3</div>
+        <div class="step-text">Pilih menu <b>Scan/Bayar</b> lalu unggah gambar QRIS dari galeri.</div>
+    </div>
+    <div class="step-item">
+        <div class="step-number">4</div>
+        <div class="step-text">Masukkan nominal yang sesuai (<b>Rp 50.000</b>) dan selesaikan pembayaran.</div>
+    </div>
+</div>
+
+<div class="btn-container animate-up" style="animation-delay: 0.5s;">
+
+    <p style="text-align: center; font-size: 10px; color: var(--text-muted);">Saldo akan otomatis masuk setelah verifikasi</p>
+</div>
+
+<script>
+    let time = 899;
+    const countdownEl = document.getElementById('countdown');
+    setInterval(() => {
+        let min = Math.floor(time / 60);
+        let sec = time % 60;
+        sec = sec < 10 ? '0' + sec : sec;
+        countdownEl.innerHTML = `${min}:${sec}`;
+        if(time > 0) time--;
+    }, 1000);
+</script>
+
+</body>
+</html>

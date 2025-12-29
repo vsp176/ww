@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisionPay - Playing Video</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    
+    <style>
+        :root {
+            --bg-color: #000000;
+            --card-color: #0a0a0a;
+            --accent-color: #ff3b30;
+            --border-color: #151515;
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Montserrat', sans-serif;
+            --side-margin: 20px; 
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-color); color: #fff; font-family: var(--font-sans); }
+
+        /* HEADER */
+        header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 15px 20px; position: fixed; top: 0; left: 0; right: 0;
+            background: #0a0a0a; z-index: 1000; border-bottom: 1px solid var(--border-color); 
+        }
+        body { padding-top: 75px; }
+
+        .header-icons { display: flex; gap: 12px; align-items: center; }
+        .icon-box {
+            width: 40px; height: 40px; background-color: #1a1a1a; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; text-decoration: none;
+        }
+        .icon-box i { font-size: 20px; color: #ffffff; }
+
+        /* VIDEO */
+        .video-container {
+            width: 100%; aspect-ratio: 16/9; background: #000;
+            position: relative; margin-bottom: 15px;
+        }
+        .video-container iframe { width: 100%; height: 100%; border: none; }
+
+        /* CONTENT */
+        .content { padding: 0 var(--side-margin); }
+
+        /* JUDUL BERJALAN */
+        .video-title-container {
+            width: 100%; overflow: hidden; white-space: nowrap;
+            margin-bottom: 10px; background: rgba(255,255,255,0.03);
+            padding: 10px 0; border-radius: 5px;
+        }
+        .video-title-container h1 {
+            display: inline-block; font-size: 15px; font-weight: 700;
+            padding-left: 100%; animation: marquee 15s linear infinite; color: #fff;
+        }
+        @keyframes marquee {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
+        }
+
+        .video-meta { 
+            font-size: 11px; color: #666; margin-bottom: 25px; 
+            display: flex; justify-content: space-between; font-weight: 600;
+        }
+
+        /* BUTTON KLAIM - FONT KLASIK */
+        .btn-claim {
+            width: 100%; 
+            padding: 15px 0;
+            border-radius: 12px;
+            border: none;
+            /* Font Klasik & Ukuran Pas */
+            font-family: var(--font-serif); 
+            font-size: 14px; 
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: #1a1a1a;
+            color: #444;
+            cursor: not-allowed;
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+        }
+
+        .btn-claim.active {
+            background: var(--accent-color);
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 59, 48, 0.4);
+        }
+
+        /* BOX PENJELASAN */
+        .info-box {
+            background: #050505; border: 1px solid var(--border-color);
+            padding: 18px; border-radius: 15px; margin-bottom: 50px;
+        }
+        .info-box h4 { 
+            font-size: 12px; color: var(--accent-color); margin-bottom: 10px; 
+            display: flex; align-items: center; gap: 8px; text-transform: uppercase;
+        }
+        .info-box p { font-size: 12px; color: #aaa; line-height: 1.6; margin-bottom: 10px; }
+        .info-box ul { padding-left: 18px; font-size: 11px; color: #777; }
+        .info-box li { margin-bottom: 6px; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="beranda.html">
+            <img src="logo.jpg" alt="VisionPay" style="height: 40px; width: auto; display: block;">
+        </a>
+        <div class="header-icons">
+            <a href="vip.html" class="icon-box"><i class="ri-vip-crown-fill" style="color:#ff3b30"></i></a>
+            <a href="customer-service.html" class="icon-box"><i class="ri-customer-service-2-fill"></i></a>
+            <a href="film.html" class="icon-box"><i class="ri-video-line"></i></a>
+        </div>
+    </header>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+
+    <div class="content">
+        <div class="video-title-container">
+            <h1 id="movingTitle">Exclusive Video Task - Tonton video selama 60 detik untuk mendapatkan reward saldo sebesar Rp 10.000</h1>
+        </div>
+
+        <div class="video-meta">
+            <span>Hadiah: Rp 5.000</span>
+            <span><i class="ri-time-line"></i> 1 Menit</span>
+        </div>
+
+        <button id="btnClaim" class="btn-claim" disabled>
+            <i class="ri-lock-2-line"></i> Tunggu 60S
+        </button>
+
+        <div class="info-box">
+            <h4><i class="ri-information-fill"></i> Instruksi Tugas</h4>
+            <p>Pastikan langkah Anda benar agar hadiah tugas dapat diterima:</p>
+            <ul>
+                <li>Selesaikan tontonan hingga timer 60 detik berakhir.</li>
+                <li>Klik button klaim yang berubah warna menjadi merah.</li>
+                <li>Satu tugas hanya bisa diklaim satu kali per sesi.</li>
+            </ul>
+        </div>
+    </div>
+
+<script>
+    // 1. Ambil ID Video dan Judul dari URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const videoId = urlParams.get('v') || 'dQw4w9WgXcQ'; // Default jika link kosong
+    const videoTitle = urlParams.get('title') || 'Exclusive Video Task';
+
+    // 2. Pasang Video ke Iframe
+    const player = document.querySelector('.video-container iframe');
+    player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&rel=0`;
+
+    // 3. Pasang Judul ke Marquee
+    document.getElementById('movingTitle').innerText = `${videoTitle}`;
+
+    // 4. Logika Timer (Tetap 1 Menit)
+    let timeLeft = 60; 
+    const btnClaim = document.getElementById('btnClaim');
+
+    const countdown = setInterval(() => {
+        timeLeft--;
+        if (timeLeft > 0) {
+            btnClaim.innerHTML = `<i class="ri-time-line"></i> Tunggu ${timeLeft}S`;
+        } else {
+            clearInterval(countdown);
+            btnClaim.classList.add('active');
+            btnClaim.removeAttribute('disabled');
+            btnClaim.innerHTML = `<i class="ri-gift-fill"></i> Klaim Hadiah Sekarang`;
+        }
+    }, 1000);
+
+    btnClaim.onclick = () => {
+        if (btnClaim.classList.contains('active')) {
+            alert(`Selamat! Bonus saldo Rp 5.000 dari video "${videoTitle}" berhasil diklaim.`);
+            window.location.href = 'film.html';
+        }
+    };
+</script>
+</body>
+</html>
